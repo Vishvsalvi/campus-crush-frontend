@@ -43,8 +43,8 @@ export default function Home() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <Card >  
+    <main className="flex min-h-screen flex-col items-center justify-between ">
+      <Card className="mt-20 mx-5" >  
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold" >Welcome to Thakur College Exclusive Dating App 💖</CardTitle>
           <CardDescription className="text-center" >Enter your credentials to continue</CardDescription>
@@ -109,7 +109,7 @@ export default function Home() {
                   <SelectItem value="Arts">Arts</SelectItem>
                 </SelectContent>
               </Select>
-              <Button className="bg-red-600" onClick={handleSubmit} type="submit" >Submit</Button>
+              <Button variant="destructive" onClick={handleSubmit} type="submit" >Submit</Button>
             </div>
          
           </form>
