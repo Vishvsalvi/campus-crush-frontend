@@ -78,6 +78,9 @@ export default function Forming() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
+                                                    id="name"
+                                                    name="name"
+                                                    type="text"
                                                     {...field}
                                                 // value={name}
                                                 // onChange={(e) => setName(e.target.value)}
@@ -101,6 +104,9 @@ export default function Forming() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
+                                                    id="email"
+                                                    name="email"
+                                                    type="email"
                                                     {...field}
                                                 // value={name}
                                                 // onChange={(e) => setName(e.target.value)}
@@ -124,6 +130,9 @@ export default function Forming() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
+                                                    id="password"
+                                                    name="password"
+                                                    type="password"
                                                     {...field}
                                                 // value={name}
                                                 // onChange={(e) => setName(e.target.value)}
