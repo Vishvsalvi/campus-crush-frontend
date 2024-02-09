@@ -1,0 +1,133 @@
+"use client"
+import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+
+import { useRouter } from "next/navigation";
+
+
+export default function Home() {
+
+const [days, setDays] = useState(0);
+const [hours, setHours] = useState(0);
+const [minutes, setMinutes] = useState(0);
+const [seconds, setSeconds] = useState(0);
+
+const [isMatched, setIsMatched] = useState("false")
+const [token, setToken] = useState("")
+const router = useRouter();
+
+
+const updateClock = () => {
+  const now = new Date().getTime();
+  const valentinesDay = new Date(new Date().getFullYear(), 1, 14).getTime(); // Valentine's Day is on February 14th
+  const distance = valentinesDay - now;
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+  setDays(days);
+  setHours(hours);
+  setMinutes(minutes);
+  setSeconds(seconds);
+};
+
+
+
+useEffect(() => {
+  const timer = setInterval(updateClock, 1000);
+  return () => clearInterval(timer);
+}, []); // Run only once on component mount
+
+useEffect(() => {
+  updateClock(); // Initial call to update clock
+}, []); // Run only once on component mount
+
+
+useEffect(() => {
+  setToken(localStorage.getItem("token"));
+  if(!token){
+    router.push("/");
+  }
+}, [])
+
+useEffect(() => {
+    setIsMatched(localStorage.getItem("isMatched"));
+}, [])
+
+
+if(isMatched === "false"){
+  return  ( 
+    <div className="flex min-h-screen flex-col items-center justify-between pt-48">
+  <Button>
+    Get a Match 💝
+  </Button>
+</div>)
+} else  {
+
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between ">
+     <div className=" h-screen">
+      <div className="flex flex-col items-center justify-center w-full h-full gap-8 sm:gap-16">
+      <strong className=" text-center sm:block text-3xl font-extrabold sm:text-5xl"> Your blind date will be revealed in </strong>
+        <div className="flex justify-center gap-3 sm:gap-8">
+          <div className="flex flex-col gap-5 relative">
+            <div className="h-16 w-16 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex justify-between items-center bg-red-600 rounded-lg">
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 !-left-[6px] rounded-full bg-[#191A24]"></div>
+              <span className="lg:text-7xl sm:text-6xl text-3xl font-semibold text-white">
+                {days}
+              </span>
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 -right-[6px] rounded-full bg-[#191A24]"></div>
+            </div>
+            <span className="text-[#8486A9] text-xs sm:text-2xl text-center capitalize">
+              {days == 1 ? "Day" : "Days"}
+            </span>
+          </div>
+          <div className="flex flex-col gap-5 relative">
+            <div className="h-16 w-16 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex justify-between items-center bg-red-600 rounded-lg">
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 !-left-[6px] rounded-full bg-[#191A24]"></div>
+              <span className="lg:text-7xl sm:text-6xl text-3xl font-semibold text-white">
+                {hours}
+              </span>
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 -right-[6px] rounded-full bg-[#191A24]"></div>
+            </div>
+            <span className="text-[#8486A9] text-xs sm:text-2xl text-center font-medium">
+              {hours == 1 ? "Hour" : "Hours"}
+            </span>
+          </div>
+          <div className="flex flex-col gap-5 relative">
+            <div className="h-16 w-16 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex justify-between items-center bg-red-600 rounded-lg">
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 !-left-[6px] rounded-full bg-[#191A24]"></div>
+              <span className="lg:text-7xl sm:text-6xl text-3xl font-semibold text-white">
+                {minutes}
+              </span>
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 -right-[6px] rounded-full bg-[#191A24]"></div>
+            </div>
+            <span className="text-[#8486A9] text-xs sm:text-2xl text-center capitalize">
+              {minutes == 1 ? "Minute" : "Minutes"}
+            </span>
+          </div>
+          <div className="flex flex-col gap-5 relative">
+            <div className="h-16 w-16 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex justify-between items-center bg-red-600 rounded-lg">
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 !-left-[6px] rounded-full bg-[#191A24]"></div>
+              <span className="lg:text-7xl sm:text-6xl text-3xl font-semibold text-white">
+                {seconds}
+              </span>
+              <div className="relative h-[0.5rem] w-[0.5rem] sm:h-3 sm:w-3 -right-[6px] rounded-full bg-[#191A24]"></div>
+            </div>
+            <span className="text-[#8486A9] text-xs sm:text-2xl text-center capitalize">
+              {seconds == 1 ? "Second" : "Seconds"}
+            </span>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+    
+
+    </main>
+  );
+}
+}

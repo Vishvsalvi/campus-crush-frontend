@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"; // Keep useState as required
+import { useEffect, useState } from "react"; // Keep useState as required
 import {
   Card,
   CardContent,
@@ -70,11 +70,13 @@ export default function Forming() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [token , setToken] = useState("");
 
   const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const values = form.getValues();
@@ -84,14 +86,13 @@ export default function Forming() {
         values
       );
 
-      setIsLoading(true);
             
       if (registerUser.status === 201) {
         const login = await axios.post("http://localhost:5000/v1/auth/login", {
           email: values.email,
           password: values.password
         });
-        router.push("/");
+        router.push("/home");
         console.log(login)
         toast("Success");
         localStorage.setItem("token", login.data.data.accessToken);
@@ -107,6 +108,14 @@ export default function Forming() {
       setIsLoading(false);
     }
   };
+
+  useEffect
+  (() => {
+    setToken(localStorage.getItem("token"));
+    if(token){
+      router.push("/home");
+    }
+  }, [])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between ">
@@ -302,7 +311,7 @@ export default function Forming() {
 
         <CardDescription className="text-center">
           Already have an account?{" "}
-          <Link href="/signin" className="text-red-500">
+          <Link href="/" className="text-red-500">
             Sign in
           </Link>
         </CardDescription>
