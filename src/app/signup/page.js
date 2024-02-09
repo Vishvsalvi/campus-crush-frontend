@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react"; // Keep useState as required
 import {
   Card,
@@ -7,8 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
+
 
 import {
   Select,
@@ -27,6 +30,7 @@ import { Form } from "@/components/ui/form";
 
 import { data, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   FormControl,
   FormDescription,
@@ -35,6 +39,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import { toast } from "sonner";
+
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Forming() {
   const formSchema = z.object({
@@ -46,7 +55,6 @@ export default function Forming() {
     year: z.string(),
   });
 
-  
   const [initialValues, setInitialValues] = useState({
     name: "",
     email: "",
@@ -61,15 +69,48 @@ export default function Forming() {
     defaultValues: initialValues, // Set initial values in useForm
   });
 
-  const onSubmit = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const values = form.getValues();
-    console.log(values);
+
+    try {
+      const values = form.getValues();
+      console.log(values);
+      const registerUser = await axios.post(
+        "http://localhost:5000/v1/auth/register",
+        values
+      );
+
+      setIsLoading(true);
+            
+      if (registerUser.status === 201) {
+        const login = await axios.post("http://localhost:5000/v1/auth/login", {
+          email: values.email,
+          password: values.password
+        });
+        router.push("/");
+        console.log(login)
+        toast("Success");
+        localStorage.setItem("token", login.data.data.accessToken);
+        localStorage.setItem("isMatched", login.data.data.studentDetails.isMatched);
+      }
+    } catch (error) {
+      
+      setIsLoading(true);
+      // toast(error)
+      toast(error.response.data.error.message);
+
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between ">
-      <Card className="mt-20 mx-5">
+      <Card className="mt-20 mx-5 py-3">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
             Welcome to Thakur College Exclusive Dating App 💖
@@ -82,7 +123,6 @@ export default function Forming() {
           <Form {...form}>
             <form onSubmit={onSubmit}>
               <div className="flex flex-col space-y-4">
-
                 <FormField
                   control={form.control}
                   name="name"
@@ -106,7 +146,7 @@ export default function Forming() {
                   )}
                 />
 
-            <FormField
+                <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
@@ -129,30 +169,28 @@ export default function Forming() {
                   )}
                 />
 
-
-            <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>
-                            <Label htmlFor="email">Email</Label>
-                        </FormLabel>
-                        <FormControl>
-                            <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={field.value} // Use controlled value
-                            {...field}
-                            />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />    
-
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <Label htmlFor="email">Email</Label>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={field.value} // Use controlled value
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}
@@ -163,15 +201,18 @@ export default function Forming() {
                         <Label htmlFor="gender">Gender</Label>
                       </FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <SelectTrigger className="">
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               <SelectLabel>Gender</SelectLabel>
-                              <SelectItem value="male">Male</SelectItem>
-                              <SelectItem value="female">Female</SelectItem>
+                              <SelectItem value="M">Male</SelectItem>
+                              <SelectItem value="F">Female</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -183,81 +224,89 @@ export default function Forming() {
                 />
 
                 <FormField
-                    control={form.control}
-                    name="stream"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>
-                            <Label htmlFor="stream">Stream</Label>
-                        </FormLabel>
-                        <FormControl>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger className="">
-                                <SelectValue placeholder="Select your stream" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                <SelectLabel>Stream</SelectLabel>
-                                <SelectItem value="science">Science</SelectItem>
-                                <SelectItem value="commerce">Commerce</SelectItem>
-                                <SelectItem value="arts">Arts</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-
+                  control={form.control}
+                  name="stream"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <Label htmlFor="stream">Stream</Label>
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="">
+                            <SelectValue placeholder="Select your stream" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Stream</SelectLabel>
+                              <SelectItem value="Science">Science</SelectItem>
+                              <SelectItem value="Commerce">Commerce</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
-                    control={form.control}
-                    name="year"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>
-                            <Label htmlFor="year">Year</Label>
-                        </FormLabel>
-                        <FormControl>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger className="">
-                                <SelectValue placeholder="Select your year" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                <SelectLabel>Year</SelectLabel>
-                                <SelectItem value="first">First</SelectItem>
-                                <SelectItem value="second">Second</SelectItem>
-                                <SelectItem value="third">Third</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <Label htmlFor="year">Year</Label>
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="">
+                            <SelectValue placeholder="Select your year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Year</SelectLabel>
+                              <SelectItem value="FY">First</SelectItem>
+                              <SelectItem value="SY">Second</SelectItem>
+                              <SelectItem value="TY">Third</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                {
-                   form.formState.isValid == true   ? (
+                <Button
+                  disabled={isLoading || !form.formState.isValid}
+                  variant="destructive"
+                  type="submit"
+                >
+                  {isLoading ? "Loading..." : "Submit"}
+                </Button>
 
-                    <Button variant="destructive" type="submit" >
-                      Submit
-                    </Button>
-                  ) : (
-
-                    <Button disabled variant="destructive" type="submit">
-                      Submit
-                    </Button>
-                  )
-                }
               </div>
             </form>
           </Form>
+         
         </CardContent>
+
+        <CardDescription className="text-center">
+          Already have an account?{" "}
+          <Link href="/signin" className="text-red-500">
+            Sign in
+          </Link>
+        </CardDescription>
+
       </Card>
     </main>
   );

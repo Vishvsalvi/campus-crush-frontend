@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
 
@@ -9,6 +11,11 @@ const [days, setDays] = useState(0);
 const [hours, setHours] = useState(0);
 const [minutes, setMinutes] = useState(0);
 const [seconds, setSeconds] = useState(0);
+
+const [isMatched, setIsMatched] = useState("false")
+const [token, setToken] = useState("")
+const router = useRouter();
+
 
 const updateClock = () => {
   const now = new Date().getTime();
@@ -19,12 +26,14 @@ const updateClock = () => {
   const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+  
   setDays(days);
   setHours(hours);
   setMinutes(minutes);
   setSeconds(seconds);
 };
+
+
 
 useEffect(() => {
   const timer = setInterval(updateClock, 1000);
@@ -34,6 +43,25 @@ useEffect(() => {
 useEffect(() => {
   updateClock(); // Initial call to update clock
 }, []); // Run only once on component mount
+
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if(!token){
+    router.push("/signin");
+  }
+}, [])
+
+
+if(isMatched === "false"){
+  return  ( 
+    <div className="flex min-h-screen flex-col items-center justify-between pt-48">
+  <Button>
+    Get a Match 💝
+  </Button>
+</div>)
+}
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between ">
@@ -90,11 +118,7 @@ useEffect(() => {
             </span>
           </div>
         </div>
-    <div className="">
-      <Button onClick={() => alert("You're not ready yet!")}>
-        Get a Match
-      </Button>
-    </div>
+ 
       </div>
     </div>
     
