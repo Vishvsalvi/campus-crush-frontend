@@ -241,9 +241,19 @@ export default function Forming() {
                     )}
                     />
 
-                <Button variant="destructive" type="submit">
-                  Submit
-                </Button>
+                {
+                   form.formState.isValid == true   ? (
+
+                    <Button variant="destructive" type="submit" >
+                      Submit
+                    </Button>
+                  ) : (
+
+                    <Button disabled variant="destructive" type="submit">
+                      Submit
+                    </Button>
+                  )
+                }
               </div>
             </form>
           </Form>
