@@ -122,10 +122,19 @@ export default function page() {
                         )}
                       />
     
+                {
+                   form.formState.isValid == true   ? (
 
-              <Button variant="destructive" type="submit">
-                Log in
-              </Button>
+                    <Button variant="destructive" type="submit" >
+                      Submit
+                    </Button>
+                  ) : (
+
+                    <Button disabled variant="destructive" type="submit">
+                      Submit
+                    </Button>
+                  )
+                }
             </div>
           </form>
         </Form>
