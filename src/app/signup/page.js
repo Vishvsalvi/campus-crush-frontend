@@ -128,7 +128,8 @@ export default function Forming() {
             Welcome to Thakur College Exclusive Dating App 💖
           </CardTitle>
           <CardDescription className="text-center">
-            Enter your credentials to continue
+            Click the button only once and wait for the response. It may take a
+            few seconds.
           </CardDescription>
         </CardHeader>
         <CardContent>

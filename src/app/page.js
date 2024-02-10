@@ -112,7 +112,10 @@ export default function page() {
               Login to Thakur College Exclusive Dating App 💖
             </CardTitle>
             <CardDescription className="text-center">
-              Enter your credentials to continue
+              Enter your credentials to continue. 
+            <br />
+            Click the button only once and wait for the response. It may take a
+            few seconds.
             </CardDescription>
           </CardHeader>
           <CardContent>
