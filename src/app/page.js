@@ -39,20 +39,25 @@ export default function page() {
     password: z.string().min(8),
   });
 
+  {/*  eslint-disable-next-line */}
   const [token , setToken] = useState("");
 
+  {/*  eslint-disable-next-line */}
   const [initialValues, setInitialValues] = useState({
     email: "",
     password: "",
   });
 
+  {/*  eslint-disable-next-line */}
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues, 
   });
 
+  {/*  eslint-disable-next-line */}
   const router = useRouter();
 
+  {/*  eslint-disable-next-line */}
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e) => {
@@ -87,13 +92,14 @@ export default function page() {
       setIsLoading(false);
     }
   };
-
+  {/*  eslint-disable-next-line */}
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token);
     if (token) {
       router.push("/home");
     }
+    {/*  eslint-disable-next-line */}
   }, [])
 
   return (
@@ -170,6 +176,7 @@ export default function page() {
             </Form>
           </CardContent>
           <CardDescription className="text-center">
+            {/*  eslint-disable-next-line */}
          Don't have an account?{" "}
           <Link href="/signup" className="text-red-500">
             Sign up

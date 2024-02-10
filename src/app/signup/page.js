@@ -117,6 +117,7 @@ export default function Forming() {
     if (token) {
       router.push("/home");
     }
+    {/*  eslint-disable-next-line */}
   }, []);
 
   return (

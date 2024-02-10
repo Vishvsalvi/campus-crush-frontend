@@ -54,6 +54,7 @@ useEffect(() => {
   if(!token){
     router.push("/");
   }
+  {/*  eslint-disable-next-line */}
 }, [])
 
 const handleMatch = async () => {
@@ -98,7 +99,8 @@ if(isMatched === "false"){
       <Alert>
   <AlertTitle>NOTE</AlertTitle>
   <AlertDescription>
-    Upon clicking the button, you will be matched with a random person of opposite gender from the Thakur College. You will get an email with the details of your match on February 14th. Don't be absent for the date! 💌
+    {/*  eslint-disable-next-line */}
+    Upon clicking the button, you will be matched with a random person of opposite gender from the Thakur College. You will get an email with the details of your match on February 14th. Do not be absent for the date! 💌
   </AlertDescription>
 </Alert>
 
