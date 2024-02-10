@@ -2,8 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
+
 import { useRouter } from "next/navigation";
 import axios from "axios";
+
 
 export default function Home() {
 
@@ -90,9 +94,17 @@ useEffect(() => {
 
 if(isMatched === "false"){
   return  ( 
-    <div className="flex min-h-screen flex-col items-center justify-between pt-48">
+    <div className="flex min-h-screen flex-col items-center pt-48">
+      <Alert>
+  <AlertTitle>NOTE</AlertTitle>
+  <AlertDescription>
+    Upon clicking the button, you will be matched with a random person of opposite gender from the Thakur College. You will get an email with the details of your match on February 14th. Don't be absent for the date! 💌
+  </AlertDescription>
+</Alert>
+
   <Button
     onClick={handleMatch}
+    className="mt-5"
   >
     Get a Match 💝
   </Button>
