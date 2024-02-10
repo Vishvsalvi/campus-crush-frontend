@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 
 export default function Home() {
 
@@ -46,21 +46,54 @@ useEffect(() => {
 
 
 useEffect(() => {
-  setToken(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   if(!token){
     router.push("/");
   }
 }, [])
 
+const handleMatch = async () => {
+  try {
+    const accessToken = localStorage.getItem("token"); 
+    const studentId = localStorage.getItem("studentId");
+
+    const headers = {
+      'access_token': `Bearer ${accessToken}`
+    };
+
+    const config = {
+      headers,
+      withCredentials: true
+    };
+
+    const response = await axios.post("http://localhost:5000/v1/match/make-match", studentId, config);
+
+    if (response.status === 200) {
+      localStorage.setItem("isMatched", "true");
+      setIsMatched("true");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 useEffect(() => {
-    setIsMatched(localStorage.getItem("isMatched"));
+    const isMatched = localStorage.getItem("isMatched");
+    if(isMatched === "true"){
+      setIsMatched("true")
+    } else {
+      setIsMatched("false")
+    }
 }, [])
 
 
 if(isMatched === "false"){
   return  ( 
     <div className="flex min-h-screen flex-col items-center justify-between pt-48">
-  <Button>
+  <Button
+    onClick={handleMatch}
+  >
     Get a Match 💝
   </Button>
 </div>)

@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
-
 import {
   Select,
   SelectContent,
@@ -70,7 +69,7 @@ export default function Forming() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [token , setToken] = useState("");
+  const [token, setToken] = useState("");
 
   const router = useRouter();
 
@@ -86,36 +85,39 @@ export default function Forming() {
         values
       );
 
-            
       if (registerUser.status === 201) {
         const login = await axios.post("http://localhost:5000/v1/auth/login", {
           email: values.email,
-          password: values.password
+          password: values.password,
         });
         router.push("/home");
-        console.log(login)
+        console.log(login);
         toast("Success");
         localStorage.setItem("token", login.data.data.accessToken);
-        localStorage.setItem("isMatched", login.data.data.studentDetails.isMatched);
+        localStorage.setItem(
+          "isMatched",
+          login.data.data.studentDetails.isMatched
+        );
+        localStorage.setItem(
+          "studentId",
+          login.data.data.studentDetails.studentId
+        );
       }
     } catch (error) {
-      
       setIsLoading(true);
-      // toast(error)
-      toast(error.response.data.error.message);
 
+      toast(error.response.data.error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect
-  (() => {
-    setToken(localStorage.getItem("token"));
-    if(token){
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
       router.push("/home");
     }
-  }, [])
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between ">
@@ -302,11 +304,9 @@ export default function Forming() {
                 >
                   {isLoading ? "Loading..." : "Submit"}
                 </Button>
-
               </div>
             </form>
           </Form>
-         
         </CardContent>
 
         <CardDescription className="text-center">
@@ -315,7 +315,6 @@ export default function Forming() {
             Sign in
           </Link>
         </CardDescription>
-
       </Card>
     </main>
   );

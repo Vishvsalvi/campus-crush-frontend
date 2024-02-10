@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"; // Keep useState as required
+import { useState, useEffect } from "react"; // Keep useState as required
 import {
   Card,
   CardContent,
@@ -39,6 +39,8 @@ export default function page() {
     password: z.string().min(8),
   });
 
+  const [token , setToken] = useState("");
+
   const [initialValues, setInitialValues] = useState({
     email: "",
     password: "",
@@ -46,7 +48,7 @@ export default function page() {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: initialValues, // Set initial values in useForm
+    defaultValues: initialValues, 
   });
 
   const router = useRouter();
@@ -64,21 +66,35 @@ export default function page() {
         values
       );
       if (response.status === 200) {
-       
         router.push("/home");
-        localStorage.setItem("token", response.data.data.accessToken);
-        localStorage.setItem("isMatched", login.data.data.studentDetails.isMatched);
-
-        console.log(response)
+        console.log(login);
+        toast("Success");
+        localStorage.setItem("token", login.data.data.accessToken);
+        localStorage.setItem(
+          "isMatched",
+          login.data.data.studentDetails.isMatched
+        );
+        localStorage.setItem(
+          "studentId",
+          login.data.data.studentDetails.studentId
+        );
       }
     } catch (error) {
       setIsLoading(true);
 
-      // toast(error?.response.data.error.message);
+      
     } finally {
       setIsLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(token);
+  //   if (token) {
+  //     router.push("/home");
+  //   }
+  // }, [])
 
   return (
     <div>
