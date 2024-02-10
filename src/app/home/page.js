@@ -94,7 +94,7 @@ useEffect(() => {
 
 if(isMatched === "false"){
   return  ( 
-    <div className="flex min-h-screen flex-col items-center pt-48">
+    <div className="flex min-h-screen flex-col items-center pt-48 mx-5">
       <Alert>
   <AlertTitle>NOTE</AlertTitle>
   <AlertDescription>
