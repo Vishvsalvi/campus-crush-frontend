@@ -67,7 +67,7 @@ export default function page() {
       const values = form.getValues();
       setIsLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/v1/auth/login",
+        `${process.env.CAMPUS_CRUSH_BACKEND}/v1/auth/login`,
         values
       );
       if (response.status === 200) {

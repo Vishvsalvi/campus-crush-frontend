@@ -81,12 +81,12 @@ export default function Forming() {
       const values = form.getValues();
       console.log(values);
       const registerUser = await axios.post(
-        "http://localhost:5000/v1/auth/register",
+        `${process.env.CAMPUS_CRUSH_BACKEND}/v1/auth/register`,
         values
       );
 
       if (registerUser.status === 201) {
-        const login = await axios.post("http://localhost:5000/v1/auth/login", {
+        const login = await axios.post(`${process.env.CAMPUS_CRUSH_BACKEND}/v1/auth/login`, {
           email: values.email,
           password: values.password,
         });
