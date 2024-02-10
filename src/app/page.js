@@ -88,13 +88,13 @@ export default function page() {
     }
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   console.log(token);
-  //   if (token) {
-  //     router.push("/home");
-  //   }
-  // }, [])
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      router.push("/home");
+    }
+  }, [])
 
   return (
     <div>
