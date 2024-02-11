@@ -7,6 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { set } from "react-hook-form";
+import { Badge } from "@/components/ui/badge"
+
 
 export default function Home() {
   const [days, setDays] = useState(0);
@@ -175,8 +177,10 @@ export default function Home() {
                 </span>
               </div>
             </div>
+            <Badge variant="secondary" >Made by students of Sybsc CS</Badge>
           </div>
         </div>
+
       </main>
     );
   }
