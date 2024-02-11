@@ -86,7 +86,7 @@ export default function Forming() {
       );
 
       if (registerUser.status === 201) {
-        const login = await axios.post(`.https://b7fb9d10e8f3d2e800af76034f6b2986.loophole.site/v1/auth/login`, {
+        const login = await axios.post(`https://b7fb9d10e8f3d2e800af76034f6b2986.loophole.site/v1/auth/login`, {
           email: values.email,
           password: values.password,
         });
