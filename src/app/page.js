@@ -63,36 +63,37 @@ export default function page() {
   const onSubmit = async (e) => {
     console.log("submitted");
     e.preventDefault();
+    
     try {
       const values = form.getValues();
       setIsLoading(true);
+      
       const response = await axios.post(
         `https://b7fb9d10e8f3d2e800af76034f6b2986.loophole.site/v1/auth/login`,
-        values
+        {
+          email: values.email,
+          password: values.password,
+        }
       );
+  
+      console.log(response);
+  
       if (response.status === 200) {
         router.push("/home");
-        console.log(login);
         toast("Success");
-        localStorage.setItem("token", login.data.data.accessToken);
-        localStorage.setItem(
-          "isMatched",
-          login.data.data.studentDetails.isMatched
-        );
-        localStorage.setItem(
-          "studentId",
-          login.data.data.studentDetails.studentId
-        );
+        
+        localStorage.setItem("token", response.data.data.accessToken);
+        localStorage.setItem("isMatched", response.data.data.studentDetails.isMatched);
+        localStorage.setItem("studentId", response.data.data.studentDetails.studentId);
       }
     } catch (error) {
-      setIsLoading(true);
-      toast("Incorrect email or password or not registered user")
-
-      
+      setIsLoading(false);
+      toast("Incorrect email or password or not registered user");
     } finally {
       setIsLoading(false);
     }
   };
+  
   {/*  eslint-disable-next-line */}
   useEffect(() => {
     const token = localStorage.getItem("token");
