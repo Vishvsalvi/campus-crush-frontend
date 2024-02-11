@@ -71,7 +71,7 @@ const handleMatch = async () => {
       withCredentials: true
     };
 
-    const response = await axios.post(`http://34.83.112.197/v1/match/make-match`, {studentId}, {headers, withCredentials: true});
+    const response = await axios.post(`https://b7fb9d10e8f3d2e800af76034f6b2986.loophole.site/v1/match/make-match`, {studentId}, {headers, withCredentials: true});
 
     if (response.status === 200) {
       localStorage.setItem("isMatched", "true");

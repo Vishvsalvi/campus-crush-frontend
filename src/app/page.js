@@ -67,7 +67,7 @@ export default function page() {
       const values = form.getValues();
       setIsLoading(true);
       const response = await axios.post(
-        `http://34.83.112.197/v1/auth/login`,
+        `https://b7fb9d10e8f3d2e800af76034f6b2986.loophole.site/v1/auth/login`,
         values
       );
       if (response.status === 200) {
