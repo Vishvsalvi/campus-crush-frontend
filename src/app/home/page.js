@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { set } from "react-hook-form";
 
 
 export default function Home() {
@@ -20,6 +21,7 @@ const [isMatched, setIsMatched] = useState("false")
 const [token, setToken] = useState("")
 const router = useRouter();
 
+const [isLoading, setIsLoading] = useState(false);
 
 const updateClock = () => {
   const now = new Date().getTime();
@@ -59,6 +61,7 @@ useEffect(() => {
 
 const handleMatch = async () => {
   try {
+    setIsLoading(true);
     const accessToken = localStorage.getItem("token"); 
     const studentId = localStorage.getItem("studentId");
 
@@ -79,6 +82,7 @@ const handleMatch = async () => {
     }
   } catch (error) {
     console.log(error);
+    setIsLoading(false);
   }
 };
 
@@ -106,9 +110,10 @@ if(isMatched === "false"){
 
   <Button
     onClick={handleMatch}
+    disabled={isLoading}
     className="mt-5"
   >
-    Get a Match 💝
+    {isLoading ? "Matching..." : "Find My Match 💝"}
   </Button>
 </div>)
 } else  {

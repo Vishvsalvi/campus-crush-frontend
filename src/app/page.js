@@ -86,6 +86,7 @@ export default function page() {
       }
     } catch (error) {
       setIsLoading(true);
+      toast("Incorrect email or password or not registered user")
 
       
     } finally {

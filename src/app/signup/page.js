@@ -105,7 +105,7 @@ export default function Forming() {
       }
     } catch (error) {
       setIsLoading(true);
-
+      toast("Error, password should be atleast 8 characters long (1 number, 1 uppercase, 1 special character ), email should be valid and all fields are required")
       
     } finally {
       setIsLoading(false);
