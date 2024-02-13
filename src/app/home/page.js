@@ -17,8 +17,10 @@ export default function Home() {
   const [seconds, setSeconds] = useState(0);
 
   const [isMatched, setIsMatched] = useState("false");
-  const [token, setToken] = useState("");
+  
   const router = useRouter();
+
+  const [status, setStatus] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,6 +88,7 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error);
+      toast("There are no dates available for you at the moment try late or bring more friends to the app.")
       setIsLoading(false);
     }
   };
