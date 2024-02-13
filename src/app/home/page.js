@@ -89,7 +89,7 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error);
-      toast("There are no dates available for you at the moment try late or bring more friends to the app.")
+      toast("There are no dates available for you at the moment try later or bring more friends to the app.")
       setIsLoading(false);
     }
   };
